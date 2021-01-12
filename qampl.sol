@@ -169,7 +169,10 @@ contract qampl_test is SafeMath{
         uint qampl = token(address(this)).balanceOf(Pair_address);
         
         uint price = qusdt * 1e18 / qampl;//现在qa的价格,usdt放大qa的精度，避免出现小数
-        new_price = base_price + (price-base_price)/10;//rebase后的单价
+        if(price >= base_price)
+            new_price = base_price + (price-base_price)/10;//rebase后的单价
+        else
+            new_price = base_price - (base_price - price)/10;//rebase后的单价
         return new_price;
     }
 
