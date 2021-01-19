@@ -87,7 +87,7 @@ contract qampl_airdrop is SafeMath{
         address Pair_address = IQkswapV2Factory(0x4cB5B19e8316743519072170886355B0e2C717cF).getPair(qampl_address, new_token) ;
 
         //池子里面需要有大于10qa才能参与空投
-        require(token(qampl_address).balanceOf(Pair_address) > 10e19);
+        require(token(qampl_address).balanceOf(Pair_address) > 1e19);
         for(uint i;i<qkswap_Pairs.length;i++)
         {
             require(qkswap_Pairs[i] != Pair_address);
