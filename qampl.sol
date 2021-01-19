@@ -106,7 +106,7 @@ contract qampl_test is SafeMath{
         _balanceOf[msg.sender] = SafeMath.safeSub(_balanceOf[msg.sender], _value);                     // Subtract from the sender
         _balanceOf[_to] = SafeMath.safeAdd(_balanceOf[_to], _value);                            // Add the same to the recipient
         emit Transfer(msg.sender, _to, _amount);                   // Notify anyone listening that this transfer took place
-        if(block.timestamp - Last_rebase_time >= 600 && Pair_address != address(0))
+        if(block.timestamp - Last_rebase_time >= 86400 && Pair_address != address(0))
         rebase();
         return true;
     }
@@ -132,8 +132,6 @@ contract qampl_test is SafeMath{
         _balanceOf[_to] = SafeMath.safeAdd(_balanceOf[_to], _value);                             // Add the same to the recipient
         _allowance[_from][msg.sender] = SafeMath.safeSub(_allowance[_from][msg.sender], _value);
         Transfer(_from, _to, _amount);
-        if(block.timestamp - Last_rebase_time >= 600 && Pair_address != address(0))
-        rebase();
         return true;
     }
 
@@ -145,13 +143,14 @@ contract qampl_test is SafeMath{
     }
 
     function setPair() public returns (bool success) {
+        require(msg.sender == owner);//防止提前rebase
         if(IQkswapV2Factory(0x4cB5B19e8316743519072170886355B0e2C717cF).getPair(address(this), 0xDF0e293CC3c7bA051763FF6b026DA0853D446E38) != address(0))
             Pair_address = IQkswapV2Factory(0x4cB5B19e8316743519072170886355B0e2C717cF).getPair(address(this), 0xDF0e293CC3c7bA051763FF6b026DA0853D446E38) ;
         return true;
     }
 
     function rebase() public returns (bool success)  {
-        require(block.timestamp - Last_rebase_time >= 600);
+        require(block.timestamp - Last_rebase_time >= 86400);
         IQkswapV2Pair pair = IQkswapV2Pair(Pair_address);
         pair.sync();
         
