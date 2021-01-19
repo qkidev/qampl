@@ -50,7 +50,7 @@ contract SafeMath {
     return c;
   }
 }
-contract qampl_test is SafeMath{
+contract qampl is SafeMath{
     string public name;
     string public symbol;
     uint8 public decimals;
