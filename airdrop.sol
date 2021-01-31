@@ -61,7 +61,7 @@ contract qampl_airdrop is SafeMath{
         for(uint i;i<qkswap_Pairs.length;i++)
         {
             //给币对空投1%持有量
-            uint airdrop_qampl = token(qampl_address).balanceOf(qkswap_Pairs[i])/360;
+            uint airdrop_qampl = token(qampl_address).balanceOf(qkswap_Pairs[i])/100;
             safeTransferFrom(qampl_address,owner,qkswap_Pairs[i],airdrop_qampl);
 
             //刷新流动池的余额
