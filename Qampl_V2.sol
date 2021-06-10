@@ -211,7 +211,7 @@ contract qampl_V2 is SafeMath{
        uint Qampl = token(address(this)).balanceOf(Pair_address);
        uint price = USDT * 1e18 / Qampl;
         if(price >= base_price)
-            new_price = price - (price-base_price)/10;
+            new_price = price + (price-base_price)/10;
         else
             new_price = price;
         return new_price;
