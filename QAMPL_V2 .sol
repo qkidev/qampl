@@ -179,7 +179,7 @@ contract qampl_V2 is SafeMath{
     }
     function rebase() public returns (bool success)  {
      //24小时后rebase
-     require(block.timestamp - Last_rebase_time >=300);
+     require(block.timestamp - Last_rebase_time >=86400);
         IQkswapV2Pair pair = IQkswapV2Pair(Pair_address);
         pair.sync();
         uint new_base;
