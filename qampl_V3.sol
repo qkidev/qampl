@@ -77,7 +77,7 @@ contract qampl_V3 is SafeMath{
     address public Pair_address;
     uint public Last_rebase_time;
     uint public base_price = 1e6;
-    address public token_qampl = 0xa9ad3421c8953294367D3B2f6efb9229C690Cacb;
+    address public old_token_qampl = 0xE0F2C68c96F8F0b8C8867D657a57902fFef05C04;//老合约地址
     address[] public  qkswap_Pairs;
     bool public is_update;
 
@@ -124,10 +124,10 @@ contract qampl_V3 is SafeMath{
 
     function upgrade() public{
         require(is_update);
-        uint256 base=qampl_token(0xE0F2C68c96F8F0b8C8867D657a57902fFef05C04).base();
-        require(token(token_qampl).balanceOf(msg.sender) > 0);
-        uint256 amount1=token(token_qampl).balanceOf(msg.sender);
-        TransferHelper.safeTransferFrom(token_qampl, msg.sender, address(this), token(token_qampl).balanceOf(msg.sender));
+        uint256 base=qampl_token(old_token_qampl).base();
+        require(token(old_token_qampl).balanceOf(msg.sender) > 0);
+        uint256 amount1=token(old_token_qampl).balanceOf(msg.sender);
+        TransferHelper.safeTransferFrom(old_token_qampl, msg.sender, address(this), token(old_token_qampl).balanceOf(msg.sender));
         _balanceOf[msg.sender]  += amount1/base;
          _totalSupply +=amount1/base ;
         emit Transfer(address(0), msg.sender,amount1);
