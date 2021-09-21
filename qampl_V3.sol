@@ -79,7 +79,8 @@ contract qampl_V3 is SafeMath{
     uint public base_price = 1e6;
     address public old_token_qampl = 0xE0F2C68c96F8F0b8C8867D657a57902fFef05C04;//老合约地址
     address[] public  qkswap_Pairs;
-    bool public is_update;
+    bool public is_upgrade;
+    bool public is_mint;
 
     /* This creates an array with all balances */
     mapping (address => uint256) private _balanceOf;
@@ -119,6 +120,21 @@ contract qampl_V3 is SafeMath{
     function stopUpgrade() public{
         require(msg.sender == owner);
         is_update = false;
+    }
+        //永久关闭mint
+    function stopMint() public{
+        require(msg.sender == owner);
+        is_mint = false;
+    }
+
+    //铸币，对部分已销毁资产按等比例铸造
+    function mint(address account, uint256 amount) public {
+        require(miner == msg.sender, "not miner");
+        require(is_mint);
+
+        totalSupply += amount;
+        balanceOf[account] += amount;
+        emit Transfer(address(0), account, amount);
     }
 
 
@@ -296,6 +312,11 @@ contract qampl_V3 is SafeMath{
         require(msg.sender == owner);
         require(token!=0xE0F2C68c96F8F0b8C8867D657a57902fFef05C04);
         TransferHelper.safeTransfer(token,msg.sender,amount);
+    }
+    
+    function setOwner(address payable newOwner) public{
+        require(msg.sender == owner);
+        owner = newOwner;
     }
 	function balanceOf(address userAddress) public view returns (uint balance) {
         return _balanceOf[userAddress]*base ;
